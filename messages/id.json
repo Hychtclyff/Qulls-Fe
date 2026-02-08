@@ -1,0 +1,49 @@
+{
+  "nav": {
+    "home": "Profil",
+    "experience": "Pengalaman",
+    "certs": "Keahlian",
+    "contact": "Kontak"
+  },
+  "hero": {
+    "status": "Available for Projects",
+    "title_start": "Yudriqul",
+    "title_highlight": "Aulia.",
+    "description": "Pengembang Full-Stack dengan spesialisasi Microservices menggunakan Next.js dan Express. Fokus pada arsitektur web terdistribusi, serta integrasi otomatisasi AI, sistem IoT, dan Infrastruktur Server.",
+    "cta_primary": "Lihat Portfolio",
+    "cta_secondary": "Unduh Resume"
+  },
+  "services": {
+    "title": "Ketertarikan Bidang",
+    "server": "Cloud & Infrastructure",
+    "iot": "Project Management",
+    "ai": "Automation Systems",
+    "arch": "System Architecture"
+  },
+  "stack": "Tech Stack & Tools",
+  "certs": "Lisensi & Sertifikasi Profesional",
+  "edu": "Pendidikan",
+  "career": "Riwayat Profesional",
+  "intern": "Magang",
+  "connect": {
+    "title": "Kontak Kerja",
+    "email": "Email Profesional",
+    "location": "Domisili",
+    "social": "Profil Profesional"
+  },
+  "projects": {
+    "title": "Studi Kasus & Project",
+    "all": "Semua",
+    "finance": "Finance",
+    "marketing": "Marketing",
+    "running": "Production Ready"
+  },
+  "footer": {
+    "copyright": "Yudriqul Aulia. Engineered for Efficiency."
+  },
+  "modal": {
+    "description": "Deskripsi",
+    "skills": "Teknologi & Metodologi",
+    "credential": "ID Validasi"
+  }
+}
