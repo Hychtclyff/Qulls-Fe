@@ -35,6 +35,7 @@ import { Input } from '@/common/components/public/ui/input';
 import { Textarea } from '@/common/components/public/ui/textarea';
 import { Slider } from '@/common/components/public/ui/slider';
 import { ActionButton } from '../ui/ActionButton';
+import SocialFormCard from './socialForm';
 
 const profileSchema = z.object({
   id: z.number().default(1).optional(),
@@ -227,6 +228,11 @@ export const ProfileForm = ({
                     </FormItem>
                   )}
                 />
+
+                <div className="col-span-full">
+                  {/* Cukup panggil ini, dia yang urus list & form add/edit */}
+                  <SocialFormCard profileId={Number(form.getValues('id'))} />
+                </div>
               </div>
             </div>
 
