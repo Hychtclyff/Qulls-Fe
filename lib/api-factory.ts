@@ -9,7 +9,7 @@ export interface CrudApi<T, K> {
   destroy: (id: number) => Promise<{ id: number }>;
 }
 
-export const createApiService = <T, K>(endpoint: ApiEndpointValue): CrudApi<T, K> => {
+export const  createApiService = <T, K>(endpoint: ApiEndpointValue): CrudApi<T, K> => {
   return {
     getAll: async (): Promise<T[]> => {
       const response = await apiClient.get(endpoint);

@@ -13,8 +13,8 @@ import { QuestBoard } from './questBoard';
 import { Strategy } from './strategy';
 import { AILab } from './aILab';
 import { GenericTable } from './genericTable';
-import { ProfileForm } from './shared/profileForm';
 import { ProfilePage } from './profilePage';
+import { ProjectPage } from './projectsPage';
 
 export default function AlicizationDualWieldDashboard() {
   const { state, actions } = useDashboard(INITIAL_DATA);
@@ -89,10 +89,10 @@ export default function AlicizationDualWieldDashboard() {
               {state.activeTab === 'finances' && <Finance />}
               {state.activeTab === 'strategies' && <Strategy />}
               {state.activeTab === 'profiles' && <ProfilePage />}
-
+              {state.activeTab === 'projects' && <ProjectPage />}/
               {/* Fallback for generic tables */}
               {SCHEMA_CONFIG[state.activeTab] &&
-                !['tasks', 'schedules', 'finances', 'strategies', 'profiles'].includes(
+                !['tasks', 'schedules', 'finances', 'strategies', 'profiles', 'projects'].includes(
                   state.activeTab,
                 ) && <GenericTable SCHEMA_CONFIG={SCHEMA_CONFIG} />}
             </div>

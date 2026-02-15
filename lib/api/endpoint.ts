@@ -4,5 +4,6 @@ export const API_ENDPOINT = {
   PROFILE: '/profile',
   PROJECTS: '/projects',
   SOCIALS: '/social',
+  REPOSITORY: '/repository',
 } as const;
 export type ApiEndpointValue = (typeof API_ENDPOINT)[keyof typeof API_ENDPOINT];

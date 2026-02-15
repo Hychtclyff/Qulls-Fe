@@ -29,7 +29,7 @@ export type SchemaItem = {
 
 export const SCHEMA_CONFIG: Record<string, SchemaItem> = {
   projects: {
-    label: 'Armament Registry',
+    label: 'My Projects',
     icon: Sword,
     fields: [
       { name: 'title_en', label: 'Object Name', type: 'text', width: 'half' },
