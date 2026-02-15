@@ -1,23 +1,22 @@
-"use client";
+'use client';
 
-import { Shield, Calendar, Hash, ChevronDown, ChevronUp } from "lucide-react";
-import Image from "next/image";
+import { Shield, Calendar, Hash, ChevronDown, ChevronUp } from 'lucide-react';
+import Image from 'next/image';
 
 // Components
-import { TechCard } from "../ui/tech-card";
-import { Badge } from "@/common/components/ui/badge";
-import { Skeleton } from "@/common/components/ui/skeleton";
-import { Button } from "@/common/components/ui/button";
+import { TechCard } from '../ui/tech-card';
+import { Badge } from '@/common/components/public/ui/badge';
+import { Button } from '@/common/components/public/ui/button';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/common/components/ui/collapsible";
+} from '@/common/components/public/ui/collapsible';
 
 // Hooks
-import { useTranslations, useLocale } from "next-intl";
-import { Certification, useSummary } from "../../hooks/use-summary";
-import { useState } from "react";
+import { useTranslations, useLocale } from 'next-intl';
+import { Certification, useSummary } from '../../hooks/use-summary';
+import { useState } from 'react';
 
 export const Certifications = () => {
   const t = useTranslations();
@@ -27,23 +26,16 @@ export const Certifications = () => {
 
   // Helper untuk memilih bahasa konten
   const getContent = (idVal: string | null, enVal: string | null) => {
-    return locale === "en" ? enVal || idVal : idVal;
+    return locale === 'en' ? enVal || idVal : idVal;
   };
 
   // --- LOADING STATE ---
   if (isLoading) {
     return (
-      <TechCard
-        title={t("certs")}
-        icon={Shield}
-        className="col-span-1 md:col-span-12"
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <TechCard title={t('certs')} icon={Shield} className="col-span-1 md:col-span-12">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-64 rounded-xl bg-slate-100 animate-pulse"
-            />
+            <div key={i} className="h-64 animate-pulse rounded-xl bg-slate-100" />
           ))}
         </div>
       </TechCard>
@@ -62,10 +54,10 @@ export const Certifications = () => {
   const renderCertItem = (cert: Certification) => (
     <div
       key={cert.id}
-      className="group relative flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-blue-200 transition-all duration-300 hover:-translate-y-1"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
     >
       {/* --- 1. IMAGE SECTION --- */}
-      <div className="relative w-full aspect-[16/9] bg-slate-50 overflow-hidden border-b border-slate-100">
+      <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-slate-100 bg-slate-50">
         {cert.imageUrl ? (
           <Image
             src={cert.imageUrl}
@@ -81,75 +73,64 @@ export const Certifications = () => {
         )}
 
         {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
       </div>
 
       {/* --- 2. CONTENT SECTION --- */}
-      <div className="flex flex-col flex-1 p-5">
+      <div className="flex flex-1 flex-col p-5">
         {/* Header: Issuer & Year */}
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex items-center justify-between">
           <Badge
             variant="secondary"
-            className="bg-blue-50 text-blue-700 border-blue-100 hover:bg-blue-100 text-[10px] px-2 py-0.5 h-auto font-bold uppercase tracking-wider"
+            className="h-auto border-blue-100 bg-blue-50 px-2 py-0.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase hover:bg-blue-100"
           >
             {cert.issuer}
           </Badge>
-          <div className="flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+          <div className="flex items-center gap-1 text-[11px] font-medium text-slate-400">
             <Calendar size={12} />
             <span>{cert.year}</span>
           </div>
         </div>
 
         {/* Title */}
-        <h4 className="text-base font-bold text-slate-800 leading-snug mb-2 group-hover:text-blue-600 transition-colors">
+        <h4 className="mb-2 text-base leading-snug font-bold text-slate-800 transition-colors group-hover:text-blue-600">
           {cert.name}
         </h4>
 
         {/* Description */}
-        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-4">
+        <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-slate-500">
           {getContent(cert.descId, cert.descEn)}
         </p>
 
         {/* Footer: Credential ID */}
-        <div className="mt-auto pt-3 border-t border-slate-100 flex items-center gap-2">
-          <div className="p-1 bg-slate-100 rounded text-slate-400">
+        <div className="mt-auto flex items-center gap-2 border-t border-slate-100 pt-3">
+          <div className="rounded bg-slate-100 p-1 text-slate-400">
             <Hash size={12} />
           </div>
-          <span className="text-[10px] font-mono text-slate-400 tracking-wide">
-            ID:{" "}
-            <span className="text-slate-600 font-semibold select-all">
-              {cert.credentialId}
-            </span>
+          <span className="font-mono text-[10px] tracking-wide text-slate-400">
+            ID: <span className="font-semibold text-slate-600 select-all">{cert.credentialId}</span>
           </span>
         </div>
       </div>
 
       {/* Decorative Corner Glow */}
-      <div className="absolute -top-10 -right-10 w-20 h-20 bg-blue-400/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+      <div className="pointer-events-none absolute -top-10 -right-10 h-20 w-20 rounded-full bg-blue-400/20 opacity-0 blur-2xl transition-opacity group-hover:opacity-100"></div>
     </div>
   );
 
   return (
-    <TechCard
-      title={t("certs")}
-      icon={Shield}
-      className="col-span-1 md:col-span-12"
-    >
-      <Collapsible
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        className="w-full flex flex-col gap-6"
-      >
+    <TechCard title={t('certs')} icon={Shield} className="col-span-1 md:col-span-12">
+      <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-full flex-col gap-6">
         <div className="flex flex-col">
           {/* Grid Utama (Initial Items) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {initialItems.map(renderCertItem)}
           </div>
 
           {/* Collapsible Content (Sisa Items) */}
           {hasMore && (
             <CollapsibleContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-5">
+              <div className="grid grid-cols-1 gap-5 pt-5 sm:grid-cols-2 lg:grid-cols-3">
                 {collapsibleItems.map(renderCertItem)}
               </div>
             </CollapsibleContent>
@@ -171,8 +152,7 @@ export const Certifications = () => {
                   </>
                 ) : (
                   <>
-                    Show More ({collapsibleItems.length}){" "}
-                    <ChevronDown size={16} />
+                    Show More ({collapsibleItems.length}) <ChevronDown size={16} />
                   </>
                 )}
               </Button>

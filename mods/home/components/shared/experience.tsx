@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { Briefcase, Calendar, ChevronDown, ChevronUp } from "lucide-react"; // Tambah Icon Chevron
-import { TechCard } from "../ui/tech-card";
-import { Badge } from "@/common/components/ui/badge";
-import { Skeleton } from "@/common/components/ui/skeleton";
-import { Button } from "@/common/components/ui/button"; // Import Button
+import { Briefcase, Calendar, ChevronDown, ChevronUp } from 'lucide-react'; // Tambah Icon Chevron
+import { TechCard } from '../ui/tech-card';
+import { Badge } from '@/common/components/public/ui/badge';
+import { Skeleton } from '@/common/components/public/ui/skeleton';
+import { Button } from '@/common/components/public/ui/button'; // Import Button
 
-import { useTranslations, useLocale } from "next-intl";
-import { Experience, useSummary } from "../../hooks/use-summary";
+import { useTranslations, useLocale } from 'next-intl';
+import { Experience, useSummary } from '../../hooks/use-summary';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/common/components/ui/collapsible"; // Import sub-komponen
-import { useState } from "react";
+} from '@/common/components/public/ui/collapsible'; // Import sub-komponen
+import { useState } from 'react';
 
 export const Experiences = () => {
   const t = useTranslations();
@@ -23,24 +23,20 @@ export const Experiences = () => {
 
   // Helper bahasa
   const getContent = (idVal: string | null, enVal: string | null) => {
-    return locale === "en" ? enVal || idVal : idVal;
+    return locale === 'en' ? enVal || idVal : idVal;
   };
 
   const formatJobType = (type: string) => {
-    return type.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    return type.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
   if (isLoading) {
     return (
-      <TechCard
-        title={t("career")}
-        icon={Briefcase}
-        className="col-span-1 md:col-span-12"
-      >
-        <div className="space-y-8 pl-2 md:px-4 max-w-4xl">
+      <TechCard title={t('career')} icon={Briefcase} className="col-span-1 md:col-span-12">
+        <div className="max-w-4xl space-y-8 pl-2 md:px-4">
           {[1, 2].map((i) => (
-            <div key={i} className="pl-8 border-l-2 border-slate-100 relative">
-              <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-200 border-4 border-white" />
+            <div key={i} className="relative border-l-2 border-slate-100 pl-8">
+              <div className="absolute top-0 -left-[9px] h-4 w-4 rounded-full border-4 border-white bg-slate-200" />
               <div className="space-y-3">
                 <Skeleton className="h-6 w-1/3 bg-slate-200" />
                 <Skeleton className="h-4 w-1/4 bg-slate-100" />
@@ -61,46 +57,45 @@ export const Experiences = () => {
 
   // Render Item Component (dibuat fungsi agar tidak duplikasi kode)
   const renderExperienceItem = (exp: Experience, idx: number) => {
-    const isInternship =
-      exp.jobType === "internship" || exp.jobType === "contract";
+    const isInternship = exp.jobType === 'internship' || exp.jobType === 'contract';
 
     return (
       <div
         key={exp.id || idx}
-        className="relative pl-8 border-l-2 border-slate-100 group hover:border-blue-200 transition-colors pb-2"
+        className="group relative border-l-2 border-slate-100 pb-2 pl-8 transition-colors hover:border-blue-200"
       >
         <div
-          className={`absolute -left-[9px] top-1.5 w-4 h-4 rounded-full border-4 border-white shadow-sm ${
-            isInternship ? "bg-slate-400" : "bg-blue-600"
-          } group-hover:scale-110 transition-transform z-10`}
+          className={`absolute top-1.5 -left-[9px] h-4 w-4 rounded-full border-4 border-white shadow-sm ${
+            isInternship ? 'bg-slate-400' : 'bg-blue-600'
+          } z-10 transition-transform group-hover:scale-110`}
         />
 
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-1">
+        <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h4 className="text-lg font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+            <h4 className="text-lg font-bold text-slate-800 transition-colors group-hover:text-blue-600">
               {getContent(exp.roleId, exp.roleEn)}
             </h4>
-            <p className="text-sm text-blue-600 font-bold mt-1 uppercase tracking-wide flex items-center gap-2 flex-wrap">
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-sm font-bold tracking-wide text-blue-600 uppercase">
               {exp.company}
-              <span className="hidden sm:inline-block w-1 h-1 bg-slate-300 rounded-full"></span>
-              <span className="text-slate-400 font-medium normal-case text-xs border border-slate-200 px-1.5 rounded bg-slate-50">
+              <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block"></span>
+              <span className="rounded border border-slate-200 bg-slate-50 px-1.5 text-xs font-medium text-slate-400 normal-case">
                 {formatJobType(exp.jobType)}
               </span>
             </p>
           </div>
 
-          <div className="flex items-center gap-2 mt-2 sm:mt-0">
-            {exp.jobType === "internship" && (
+          <div className="mt-2 flex items-center gap-2 sm:mt-0">
+            {exp.jobType === 'internship' && (
               <Badge
                 variant="secondary"
-                className="text-[10px] uppercase bg-amber-50 text-amber-600 border-amber-100"
+                className="border-amber-100 bg-amber-50 text-[10px] text-amber-600 uppercase"
               >
-                {t("intern")}
+                {t('intern')}
               </Badge>
             )}
             <Badge
               variant="outline"
-              className="text-[11px] font-mono bg-slate-50 px-2 py-0.5 rounded flex items-center gap-1 border-slate-200 shrink-0"
+              className="flex shrink-0 items-center gap-1 rounded border-slate-200 bg-slate-50 px-2 py-0.5 font-mono text-[11px]"
             >
               <Calendar size={12} className="mr-1 text-slate-400" />
               {exp.period}
@@ -108,7 +103,7 @@ export const Experiences = () => {
           </div>
         </div>
 
-        <p className="text-sm md:text-base text-slate-600 leading-relaxed mt-3">
+        <p className="mt-3 text-sm leading-relaxed text-slate-600 md:text-base">
           {getContent(exp.descId, exp.descEn)}
         </p>
       </div>
@@ -116,28 +111,22 @@ export const Experiences = () => {
   };
 
   return (
-    <TechCard
-      title={t("career")}
-      icon={Briefcase}
-      className="col-span-1 md:col-span-12"
-    >
+    <TechCard title={t('career')} icon={Briefcase} className="col-span-1 md:col-span-12">
       <Collapsible
         open={isOpen}
         onOpenChange={setIsOpen}
-        className="w-full flex flex-col gap-6" // Hapus w-[350px], ganti w-full
+        className="flex w-full flex-col gap-6" // Hapus w-[350px], ganti w-full
       >
-        <div id="experience" className="space-y-8 pl-2 md:px-4 max-w-4xl">
+        <div id="experience" className="max-w-4xl space-y-8 pl-2 md:px-4">
           {/* 1. Render item awal (selalu terlihat) */}
-          {initialItems.map((exp: Experience, idx: number) =>
-            renderExperienceItem(exp, idx)
-          )}
+          {initialItems.map((exp: Experience, idx: number) => renderExperienceItem(exp, idx))}
 
           {/* 2. Render item sisa (tersembunyi dalam CollapsibleContent) */}
           {hasMore && (
             <CollapsibleContent className="space-y-8">
               {/* start index dilanjutkan dari initial count */}
               {collapsibleItems.map((exp: Experience, idx: number) =>
-                renderExperienceItem(exp, idx + INITIAL_COUNT)
+                renderExperienceItem(exp, idx + INITIAL_COUNT),
               )}
             </CollapsibleContent>
           )}
@@ -158,8 +147,7 @@ export const Experiences = () => {
                   </>
                 ) : (
                   <>
-                    Show More ({collapsibleItems.length}){" "}
-                    <ChevronDown size={16} />
+                    Show More ({collapsibleItems.length}) <ChevronDown size={16} />
                   </>
                 )}
               </Button>

@@ -1,12 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/common/components/ui/card";
-import { cn } from "@/lib/utils";
-import { LucideIcon } from "lucide-react";
-import { ReactNode } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/common/components/public/ui/card';
+import { cn } from '@/lib/utils';
+import { LucideIcon } from 'lucide-react';
+import { ReactNode } from 'react';
 
 export interface TechCardProps {
   children: ReactNode;
@@ -28,30 +23,30 @@ export const TechCard = ({
   return (
     <Card
       className={cn(
-        "relative overflow-hidden group transition-all duration-500 hover:shadow-md hover:border-blue-300/50",
-        className
+        'group relative overflow-hidden transition-all duration-500 hover:border-blue-300/50 hover:shadow-md',
+        className,
       )}
     >
       {/* SAO Decorations */}
-      <div className="absolute top-0 left-0 w-0 h-[2px] bg-blue-500 transition-all duration-500 group-hover:w-8 z-20"></div>
-      <div className="absolute top-0 left-0 h-0 w-[2px] bg-blue-500 transition-all duration-500 group-hover:h-8 z-20"></div>
-      <div className="absolute bottom-0 right-0 w-0 h-[2px] bg-blue-500 transition-all duration-500 group-hover:w-8 z-20"></div>
-      <div className="absolute bottom-0 right-0 h-0 w-[2px] bg-blue-500 transition-all duration-500 group-hover:h-8 z-20"></div>
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(45deg,transparent_25%,#000_25%,#000_50%,transparent_50%,transparent_75%,#000_75%,#000_100%)] bg-[size:4px_4px] group-hover:opacity-[0.05] transition-opacity" />
+      <div className="absolute top-0 left-0 z-20 h-[2px] w-0 bg-blue-500 transition-all duration-500 group-hover:w-8"></div>
+      <div className="absolute top-0 left-0 z-20 h-0 w-[2px] bg-blue-500 transition-all duration-500 group-hover:h-8"></div>
+      <div className="absolute right-0 bottom-0 z-20 h-[2px] w-0 bg-blue-500 transition-all duration-500 group-hover:w-8"></div>
+      <div className="absolute right-0 bottom-0 z-20 h-0 w-[2px] bg-blue-500 transition-all duration-500 group-hover:h-8"></div>
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,#000_25%,#000_50%,transparent_50%,transparent_75%,#000_75%,#000_100%)] bg-[size:4px_4px] opacity-[0.03] transition-opacity group-hover:opacity-[0.05]" />
 
       {(title || Icon) && !noPadding && (
         // Reduced padding-bottom (pb-2 -> pb-1) to tighten gap between title and content
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 pt-5 px-6 relative z-10">
+        <CardHeader className="relative z-10 flex flex-row items-center justify-between space-y-0 px-6 pt-5 pb-1">
           <div className="flex items-center gap-3">
             {Icon && (
-              <div className="relative group/icon">
-                <div className="absolute inset-0 bg-blue-400/30 blur-lg rounded-full opacity-0 group-hover/icon:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative p-2 bg-slate-100 rounded-md text-slate-500 group-hover:text-blue-600 transition-colors">
+              <div className="group/icon relative">
+                <div className="absolute inset-0 rounded-full bg-blue-400/30 opacity-0 blur-lg transition-opacity duration-500 group-hover/icon:opacity-100"></div>
+                <div className="relative rounded-md bg-slate-100 p-2 text-slate-500 transition-colors group-hover:text-blue-600">
                   <Icon size={18} />
                 </div>
               </div>
             )}
-            <CardTitle className="text-xs font-bold tracking-widest text-slate-500 uppercase group-hover:text-slate-800 transition-colors font-mono">
+            <CardTitle className="font-mono text-xs font-bold tracking-widest text-slate-500 uppercase transition-colors group-hover:text-slate-800">
               {title}
             </CardTitle>
           </div>
@@ -60,9 +55,7 @@ export const TechCard = ({
       )}
 
       {/* Reduced padding-top (pt-4 -> pt-2) to tighten gap */}
-      <CardContent
-        className={cn("relative z-10 ", noPadding ? "p-0" : "pt-2 pb-5 px-6")}
-      >
+      <CardContent className={cn('relative z-10', noPadding ? 'p-0' : 'px-6 pt-2 pb-5')}>
         {children}
       </CardContent>
     </Card>
