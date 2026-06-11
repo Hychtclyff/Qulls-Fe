@@ -1,66 +1,49 @@
 'use client';
 
-import { GraduationCap, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
+import { GraduationCap, ChevronDown, ChevronUp, ArrowUpRight } from 'lucide-react';
+import Image from 'next/image'; // Tambahkan ini
 import { TechCard } from '../ui/tech-card';
-import { Badge } from '@/common/components/public/ui/badge';
-import { Skeleton } from '@/common/components/public/ui/skeleton';
-import { Button } from '@/common/components/public/ui/button';
 
-import { useTranslations, useLocale } from 'next-intl';
-import { Education, useSummary } from '../../hooks/use-summary';
+import { Badge } from '@/common/components/public/ui/badge';
+import { Button } from '@/common/components/public/ui/button';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/common/components/public/ui/collapsible';
-import { useState } from 'react';
+
+const staticEducation = [
+  {
+    id: 'edu-1',
+    degree: 'S1 Sistem Informasi',
+    school: 'Universitas Jambi',
+    period: 'Juli 2022 - Sekarang',
+    // Tempatkan URL logo Universitas Jambi di sini (opsional)
+    logoUrl: 'https://4hb5g34gc9.ufs.sh/f/CacFL4EqKm1SojrXx91yaS32AP4OiVQlfC5g0HxpDEcF8YdR',
+    description:
+      'Minor dalam Web Development. Fokus pada rekayasa perangkat lunak, arsitektur sistem, dan otomatisasi bisnis. Aktif mengaplikasikan teknologi untuk menyelesaikan studi kasus dunia nyata.',
+    // Masukkan ke dalam objek
+    research: 'https://ejurnal.seminar-id.com/index.php/josh/article/view/9461',
+  },
+];
 
 export const Educations = () => {
-  const t = useTranslations();
-  const locale = useLocale();
-  const { education, isLoading } = useSummary();
   const [isOpen, setIsOpen] = useState(false);
+  const education = staticEducation;
 
-  // Helper bahasa
-  const getContent = (idVal: string | null, enVal: string | null) => {
-    return locale === 'en' ? enVal || idVal : idVal;
-  };
-
-  // Loading State
-  if (isLoading) {
-    return (
-      <TechCard title={t('edu')} icon={GraduationCap} className="md:col-span-6">
-        <div className="flex h-full flex-col justify-center space-y-6 pl-2">
-          {[1, 2].map((i) => (
-            <div key={i} className="flex gap-4">
-              <div className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-slate-200" />
-              <div className="w-full space-y-2">
-                <Skeleton className="h-4 w-3/4 bg-slate-200" />
-                <Skeleton className="h-3 w-1/2 bg-slate-100" />
-                <Skeleton className="h-5 w-16 rounded-md bg-slate-100" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </TechCard>
-    );
-  }
-
-  // --- LOGIC COLLAPSIBLE ---
-  // Tampilkan 1 item terbaru secara default, sisanya di-collapse
   const INITIAL_COUNT = 1;
-  const initialItems = education?.slice(0, INITIAL_COUNT) || [];
-  const collapsibleItems = education?.slice(INITIAL_COUNT) || [];
+  const initialItems = education.slice(0, INITIAL_COUNT);
+  const collapsibleItems = education.slice(INITIAL_COUNT);
   const hasMore = collapsibleItems.length > 0;
-  const totalItems = education?.length || 0;
+  const totalItems = education.length;
 
-  // Helper render item (agar tidak duplikasi kode)
-  const renderEducationItem = (edu: Education, actualIndex: number) => {
+  const renderEducationItem = (edu: (typeof staticEducation)[0], actualIndex: number) => {
     const isLastItem = actualIndex === totalItems - 1;
 
     return (
       <div
-        key={edu.id || actualIndex}
+        key={edu.id}
         className="group relative flex items-start gap-4 overflow-hidden rounded-xl p-2 transition-colors hover:bg-slate-50"
       >
         {/* Timeline Line & Dot */}
@@ -74,41 +57,72 @@ export const Educations = () => {
         </div>
 
         <div className="w-full pb-2">
-          <h4 className="text-sm leading-tight font-bold tracking-wide text-slate-800 uppercase transition-colors group-hover:text-blue-600">
-            {getContent(edu.degreeId, edu.degreeEn)}
-          </h4>
+          {/* Header & Logo Section */}
+          <div className="flex items-center gap-3">
+            {/* Space untuk Logo */}
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-md border border-slate-200 bg-white p-1">
+              {edu.logoUrl ? (
+                <Image
+                  src={edu.logoUrl}
+                  alt={edu.school}
+                  fill
+                  className="object-contain p-1"
+                  sizes="40px"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-slate-50 text-slate-300">
+                  <GraduationCap size={16} />
+                </div>
+              )}
+            </div>
 
-          <p className="mt-1 text-xs font-medium text-slate-500">{edu.school}</p>
+            {/* Title & School */}
+            <div className="flex flex-col">
+              <h4 className="text-sm leading-tight font-bold tracking-wide text-slate-800 uppercase transition-colors group-hover:text-blue-600">
+                {edu.degree}
+              </h4>
+              <p className="mt-0.5 text-xs font-medium text-slate-500">{edu.school}</p>
+            </div>
+          </div>
 
+          {/* Badge Period */}
           <Badge
             variant="secondary"
-            className="mt-2 h-5 border border-slate-200 bg-slate-100 px-2 py-0 font-mono text-[10px] text-slate-600"
+            className="mt-3 h-5 border border-slate-200 bg-slate-100 px-2 py-0 font-mono text-[10px] text-slate-600"
           >
             {edu.period}
           </Badge>
 
-          <p className="mt-2 text-xs leading-relaxed text-slate-500">
-            {getContent(edu.descId, edu.descEn)}
-          </p>
+          {/* Description */}
+          <p className="mt-2 text-xs leading-relaxed text-slate-500">{edu.description}</p>
+
+          {/* Research / Publikasi Link */}
+          {edu.research && (
+            <a
+              href={edu.research}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 transition-colors hover:text-blue-800"
+            >
+              Lihat Publikasi Riset <ArrowUpRight size={12} />
+            </a>
+          )}
         </div>
       </div>
     );
   };
 
   return (
-    <TechCard title={t('edu')} icon={GraduationCap} className="md:col-span-6">
+    <TechCard title="Pendidikan" icon={GraduationCap} className="md:col-span-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex h-full flex-col">
         <div className="flex flex-col justify-center space-y-2">
           {/* 1. Item Utama (Selalu Muncul) */}
-          {initialItems.map((edu: Education, idx: number) => renderEducationItem(edu, idx))}
+          {initialItems.map((edu, idx) => renderEducationItem(edu, idx))}
 
           {/* 2. Item Tersembunyi */}
           {hasMore && (
             <CollapsibleContent className="space-y-2">
-              {collapsibleItems.map((edu: Education, idx: number) =>
-                // Penting: pass index asli (idx + INITIAL_COUNT) untuk logika garis timeline
-                renderEducationItem(edu, idx + INITIAL_COUNT),
-              )}
+              {collapsibleItems.map((edu, idx) => renderEducationItem(edu, idx + INITIAL_COUNT))}
             </CollapsibleContent>
           )}
         </div>
@@ -120,15 +134,15 @@ export const Educations = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 gap-2 text-xs text-slate-400 hover:bg-transparent hover:text-blue-600"
+                className="h-8 gap-2 text-xs text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
               >
                 {isOpen ? (
                   <>
-                    Show Less <ChevronUp size={14} />
+                    Tampilkan Lebih Sedikit <ChevronUp size={14} />
                   </>
                 ) : (
                   <>
-                    Show More ({collapsibleItems.length}) <ChevronDown size={14} />
+                    Lihat Semua ({collapsibleItems.length}) <ChevronDown size={14} />
                   </>
                 )}
               </Button>

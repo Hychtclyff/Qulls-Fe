@@ -25,6 +25,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/**', // Mengizinkan semua path di domain ini
+      },
+      {
+        protocol: 'https',
         hostname: 'cdn.simpleicons.org',
         port: '',
         pathname: '/**', // Mengizinkan semua path di domain ini

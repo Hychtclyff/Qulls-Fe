@@ -1,32 +1,32 @@
-import { GithubIcon, InstagramIcon, LinkedinIcon } from "lucide-react";
+import { GithubIcon, InstagramIcon, LinkedinIcon } from 'lucide-react';
 
 export const CONTACT_DATA = {
-  email: "yudriqul@example.com",
-  location: "Indonesia",
+  email: 'yudriqul2nd@gmail.com',
+  location: 'Indonesia',
   socials: [
     {
-      name: "LinkedIn",
+      name: 'LinkedIn',
       icon: LinkedinIcon,
-      handle: "yudriqul-aulia",
-      url: "https://linkedin.com/in/yudriqul-aulia",
-      bg: "bg-blue-50",
-      text: "text-blue-700",
+      handle: 'yudriqul-aulia',
+      url: 'https://linkedin.com/in/yudriqul-aulia',
+      bg: 'bg-blue-50',
+      text: 'text-blue-700',
     },
     {
-      name: "GitHub",
+      name: 'GitHub',
       icon: GithubIcon,
-      handle: "yudriqul",
-      url: "https://github.com/yudriqul",
-      bg: "bg-slate-100",
-      text: "text-slate-800",
+      handle: 'yudriqul',
+      url: 'https://github.com/yudriqul',
+      bg: 'bg-slate-100',
+      text: 'text-slate-800',
     },
     {
-      name: "Instagram",
+      name: 'Instagram',
       icon: InstagramIcon,
-      handle: "@yudriqul",
-      url: "#",
-      bg: "bg-pink-50",
-      text: "text-pink-600",
+      handle: '@yudriqul',
+      url: '#',
+      bg: 'bg-pink-50',
+      text: 'text-pink-600',
     },
   ],
 };

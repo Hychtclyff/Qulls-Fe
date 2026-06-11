@@ -1,63 +1,34 @@
 'use client';
 
-import { Briefcase, Calendar, ChevronDown, ChevronUp } from 'lucide-react'; // Tambah Icon Chevron
+import { useState } from 'react';
+import { Briefcase, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { TechCard } from '../ui/tech-card';
-import { Badge } from '@/common/components/public/ui/badge';
-import { Skeleton } from '@/common/components/public/ui/skeleton';
-import { Button } from '@/common/components/public/ui/button'; // Import Button
 
-import { useTranslations, useLocale } from 'next-intl';
-import { Experience, useSummary } from '../../hooks/use-summary';
+import { Badge } from '@/common/components/public/ui/badge';
+import { Button } from '@/common/components/public/ui/button';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '@/common/components/public/ui/collapsible'; // Import sub-komponen
-import { useState } from 'react';
+} from '@/common/components/public/ui/collapsible';
+import { portfolioData } from '@/common/data/project-id';
 
 export const Experiences = () => {
-  const t = useTranslations();
-  const locale = useLocale();
-  const { experiences, isLoading } = useSummary();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Helper bahasa
-  const getContent = (idVal: string | null, enVal: string | null) => {
-    return locale === 'en' ? enVal || idVal : idVal;
-  };
+  const experiences = portfolioData.experiences;
 
-  const formatJobType = (type: string) => {
-    return type.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-  };
-
-  if (isLoading) {
-    return (
-      <TechCard title={t('career')} icon={Briefcase} className="col-span-1 md:col-span-12">
-        <div className="max-w-4xl space-y-8 pl-2 md:px-4">
-          {[1, 2].map((i) => (
-            <div key={i} className="relative border-l-2 border-slate-100 pl-8">
-              <div className="absolute top-0 -left-[9px] h-4 w-4 rounded-full border-4 border-white bg-slate-200" />
-              <div className="space-y-3">
-                <Skeleton className="h-6 w-1/3 bg-slate-200" />
-                <Skeleton className="h-4 w-1/4 bg-slate-100" />
-                <Skeleton className="h-4 w-full bg-slate-100" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </TechCard>
-    );
-  }
-
-  // LOGIC BARU: Pisahkan data menjadi "Utama" (tampil terus) dan "Sisa" (masuk collapsible)
   const INITIAL_COUNT = 2;
-  const initialItems = experiences?.slice(0, INITIAL_COUNT) || [];
-  const collapsibleItems = experiences?.slice(INITIAL_COUNT) || [];
+  const initialItems = experiences.slice(0, INITIAL_COUNT);
+  const collapsibleItems = experiences.slice(INITIAL_COUNT);
   const hasMore = collapsibleItems.length > 0;
 
-  // Render Item Component (dibuat fungsi agar tidak duplikasi kode)
-  const renderExperienceItem = (exp: Experience, idx: number) => {
-    const isInternship = exp.jobType === 'internship' || exp.jobType === 'contract';
+  const renderExperienceItem = (exp: any, idx: number) => {
+    const isInternship =
+      exp.role.toLowerCase().includes('intern') ||
+      exp.company.toLowerCase().includes('magang') ||
+      exp.company.toLowerCase().includes('kampus merdeka') ||
+      exp.company.toLowerCase().includes('Coding Camp');
 
     return (
       <div
@@ -73,24 +44,24 @@ export const Experiences = () => {
         <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h4 className="text-lg font-bold text-slate-800 transition-colors group-hover:text-blue-600">
-              {getContent(exp.roleId, exp.roleEn)}
+              {exp.role}
             </h4>
             <p className="mt-1 flex flex-wrap items-center gap-2 text-sm font-bold tracking-wide text-blue-600 uppercase">
               {exp.company}
               <span className="hidden h-1 w-1 rounded-full bg-slate-300 sm:inline-block"></span>
               <span className="rounded border border-slate-200 bg-slate-50 px-1.5 text-xs font-medium text-slate-400 normal-case">
-                {formatJobType(exp.jobType)}
+                {isInternship ? 'Internship' : 'Full-time'}
               </span>
             </p>
           </div>
 
           <div className="mt-2 flex items-center gap-2 sm:mt-0">
-            {exp.jobType === 'internship' && (
+            {isInternship && (
               <Badge
                 variant="secondary"
-                className="border-amber-100 bg-amber-50 text-[10px] text-amber-600 uppercase"
+                className="border-amber-100 bg-amber-50 text-[10px] text-amber-600 uppercase hover:bg-amber-100"
               >
-                {t('intern')}
+                Magang
               </Badge>
             )}
             <Badge
@@ -104,30 +75,23 @@ export const Experiences = () => {
         </div>
 
         <p className="mt-3 text-sm leading-relaxed text-slate-600 md:text-base">
-          {getContent(exp.descId, exp.descEn)}
+          {exp.description}
         </p>
       </div>
     );
   };
 
   return (
-    <TechCard title={t('career')} icon={Briefcase} className="col-span-1 md:col-span-12">
-      <Collapsible
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        className="flex w-full flex-col gap-6" // Hapus w-[350px], ganti w-full
-      >
+    <TechCard title="Pengalaman Kerja" icon={Briefcase} className="col-span-1 md:col-span-12">
+      <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-full flex-col gap-6">
         <div id="experience" className="max-w-4xl space-y-8 pl-2 md:px-4">
           {/* 1. Render item awal (selalu terlihat) */}
-          {initialItems.map((exp: Experience, idx: number) => renderExperienceItem(exp, idx))}
+          {initialItems.map((exp, idx) => renderExperienceItem(exp, idx))}
 
           {/* 2. Render item sisa (tersembunyi dalam CollapsibleContent) */}
           {hasMore && (
             <CollapsibleContent className="space-y-8">
-              {/* start index dilanjutkan dari initial count */}
-              {collapsibleItems.map((exp: Experience, idx: number) =>
-                renderExperienceItem(exp, idx + INITIAL_COUNT),
-              )}
+              {collapsibleItems.map((exp, idx) => renderExperienceItem(exp, idx + INITIAL_COUNT))}
             </CollapsibleContent>
           )}
         </div>
@@ -139,15 +103,15 @@ export const Experiences = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 text-slate-500 hover:text-blue-600"
+                className="gap-2 text-slate-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
               >
                 {isOpen ? (
                   <>
-                    Show Less <ChevronUp size={16} />
+                    Tampilkan Lebih Sedikit <ChevronUp size={16} />
                   </>
                 ) : (
                   <>
-                    Show More ({collapsibleItems.length}) <ChevronDown size={16} />
+                    Lihat Semua ({collapsibleItems.length}) <ChevronDown size={16} />
                   </>
                 )}
               </Button>

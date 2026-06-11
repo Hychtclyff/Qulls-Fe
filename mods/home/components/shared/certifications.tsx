@@ -1,9 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { Shield, Calendar, Hash, ChevronDown, ChevronUp } from 'lucide-react';
 import Image from 'next/image';
 
-// Components
 import { TechCard } from '../ui/tech-card';
 import { Badge } from '@/common/components/public/ui/badge';
 import { Button } from '@/common/components/public/ui/button';
@@ -13,45 +13,59 @@ import {
   CollapsibleTrigger,
 } from '@/common/components/public/ui/collapsible';
 
-// Hooks
-import { useTranslations, useLocale } from 'next-intl';
-import { Certification, useSummary } from '../../hooks/use-summary';
-import { useState } from 'react';
+const staticCertifications = [
+  {
+    id: 'cert-1',
+    name: 'Junior Cyber Security',
+    issuer: 'BNSP / LSP Teknologi Digital',
+    year: '2025',
+    credentialId: 'VSGA-2025',
+    imageUrl: 'https://4hb5g34gc9.ufs.sh/f/CacFL4EqKm1SnwV3POjDlcTLmS4JtbBihrjZuOp6e5vKVMNf',
+    description: 'Sertifikasi kompetensi di bidang keamanan siber tingkat junior.',
+  },
+  {
+    id: 'cert-2',
+    name: 'Google Analytics Certified',
+    issuer: 'Google',
+    year: '2025',
+    credentialId: 'GOOG-2025',
+    imageUrl: 'https://4hb5g34gc9.ufs.sh/f/CacFL4EqKm1SMUv3yIKAXbUhDimPgWCJLOV09YFkx4cBvwlR',
+    description: 'Sertifikasi resmi dari Google untuk analisis data dan performa platform digital.',
+  },
+  {
+    id: 'cert-3',
+    name: 'Fullstack Web Developer',
+    issuer: 'Binar Academy',
+    year: '2024',
+    credentialId: 'BINAR-2024',
+    imageUrl: 'https://4hb5g34gc9.ufs.sh/f/CacFL4EqKm1SWSkFXU521WyLhwIr8GAPKQ3E0fpbBN9CjDHM',
+    description:
+      'Sertifikasi kelulusan program intensif Full Stack Web Development (MSIB Kampus Merdeka).',
+  },
+  {
+    id: 'cert-4',
+    name: 'JavaScript Specialist',
+    issuer: 'Pearson VUE',
+    year: '2024',
+    credentialId: 'JS-2024',
+    imageUrl: 'https://4hb5g34gc9.ufs.sh/f/CacFL4EqKm1S6rVqudcRzUQvurXHZsc32b4i8nqNyC79DE0l',
+    description:
+      'Sertifikasi spesialisasi untuk fundamental dan implementasi bahasa pemrograman JavaScript.',
+  },
+];
 
 export const Certifications = () => {
-  const t = useTranslations();
-  const locale = useLocale();
-  const { certifications, isLoading } = useSummary();
   const [isOpen, setIsOpen] = useState(false);
-
-  // Helper untuk memilih bahasa konten
-  const getContent = (idVal: string | null, enVal: string | null) => {
-    return locale === 'en' ? enVal || idVal : idVal;
-  };
-
-  // --- LOADING STATE ---
-  if (isLoading) {
-    return (
-      <TechCard title={t('certs')} icon={Shield} className="col-span-1 md:col-span-12">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-64 animate-pulse rounded-xl bg-slate-100" />
-          ))}
-        </div>
-      </TechCard>
-    );
-  }
+  const certifications = staticCertifications;
 
   if (!certifications || certifications.length === 0) return null;
 
-  // --- LOGIC COLLAPSIBLE ---
-  const INITIAL_COUNT = 3; // Tampilkan 1 baris (3 item) pertama
+  const INITIAL_COUNT = 3;
   const initialItems = certifications.slice(0, INITIAL_COUNT);
   const collapsibleItems = certifications.slice(INITIAL_COUNT);
   const hasMore = collapsibleItems.length > 0;
 
-  // Helper Render Item (Agar kode lebih bersih)
-  const renderCertItem = (cert: Certification) => (
+  const renderCertItem = (cert: (typeof staticCertifications)[0]) => (
     <div
       key={cert.id}
       className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
@@ -68,7 +82,10 @@ export const Certifications = () => {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-slate-100 text-slate-300">
-            <Shield size={32} />
+            <Shield
+              size={32}
+              className="opacity-50 transition-transform group-hover:scale-110 group-hover:text-blue-400"
+            />
           </div>
         )}
 
@@ -99,7 +116,7 @@ export const Certifications = () => {
 
         {/* Description */}
         <p className="mb-4 line-clamp-2 text-xs leading-relaxed text-slate-500">
-          {getContent(cert.descId, cert.descEn)}
+          {cert.description}
         </p>
 
         {/* Footer: Credential ID */}
@@ -119,7 +136,7 @@ export const Certifications = () => {
   );
 
   return (
-    <TechCard title={t('certs')} icon={Shield} className="col-span-1 md:col-span-12">
+    <TechCard title="Sertifikasi" icon={Shield} className="col-span-1 md:col-span-12">
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-full flex-col gap-6">
         <div className="flex flex-col">
           {/* Grid Utama (Initial Items) */}
@@ -144,15 +161,15 @@ export const Certifications = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 text-slate-500 hover:text-blue-600"
+                className="gap-2 text-slate-500 transition-colors hover:bg-blue-50 hover:text-blue-600"
               >
                 {isOpen ? (
                   <>
-                    Show Less <ChevronUp size={16} />
+                    Tampilkan Lebih Sedikit <ChevronUp size={16} />
                   </>
                 ) : (
                   <>
-                    Show More ({collapsibleItems.length}) <ChevronDown size={16} />
+                    Lihat Semua ({collapsibleItems.length}) <ChevronDown size={16} />
                   </>
                 )}
               </Button>

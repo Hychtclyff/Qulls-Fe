@@ -1,79 +1,28 @@
-'use client'; // Pastikan ada ini karena pakai hooks
+'use client';
 
 import { Briefcase, Download, Mail, MapPin, Shield } from 'lucide-react';
 import { TechCard } from '../ui/tech-card';
 import Image from 'next/image';
 import { Button } from '@/common/components/public/ui/button';
-import { SocialLink, useSummary } from '../../hooks/use-summary';
 import { CONTACT_DATA } from '../../data/contact';
 import * as Icons from 'lucide-react';
-import { Skeleton } from '@/common/components/public/ui/skeleton';
-// 1. Import useLocale
-import { useTranslations, useLocale } from 'next-intl';
+
+// Pastikan path ini benar sesuai struktur foldermu
+import { portfolioData } from '@/common/data/project-id';
 
 export const MainProfile = () => {
-  const t = useTranslations();
-  const locale = useLocale(); // 2. Ambil locale ('id' atau 'en')
+  const { profile } = portfolioData;
 
-  const { profile, isLoading } = useSummary();
-
-  // 3. Helper Function: Pilih konten berdasarkan bahasa
-  // Jika bahasa Inggris kosong, fallback ke bahasa Indonesia
-  const getContent = (idVal: string | null, enVal: string | null) => {
-    return locale === 'en' ? enVal || idVal : idVal;
-  };
-
-  if (isLoading || !profile) {
-    return (
-      <TechCard
-        className="col-span-1 border border-white/20 bg-white/80 !p-0 shadow-sm md:col-span-12"
-        noPadding
-      >
-        <div className="flex h-full flex-col-reverse items-center justify-between gap-10 p-6 md:flex-row md:gap-16 md:p-10">
-          {/* Skeleton Loading... (Sama seperti sebelumnya) */}
-          <div className="w-full flex-1 space-y-8">
-            <div className="space-y-5">
-              <Skeleton className="h-6 w-24 rounded-full bg-slate-200" />
-              <div className="space-y-3">
-                <Skeleton className="h-10 w-3/4 rounded-lg bg-slate-200 md:h-14" />
-                <Skeleton className="h-10 w-1/2 rounded-lg bg-slate-200 md:h-14" />
-              </div>
-              <div className="max-w-xl space-y-2">
-                <Skeleton className="h-4 w-full bg-slate-100" />
-                <Skeleton className="h-4 w-5/6 bg-slate-100" />
-                <Skeleton className="h-4 w-4/6 bg-slate-100" />
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <Skeleton className="h-12 w-32 rounded-full bg-slate-200" />
-              <Skeleton className="h-12 w-32 rounded-full bg-slate-100" />
-            </div>
-            <div className="mt-2 flex flex-col gap-6 border-t border-slate-100 pt-6 md:flex-row">
-              <div className="flex items-center gap-4">
-                <Skeleton className="h-10 w-10 rounded-lg bg-slate-100" />
-                <div className="space-y-1">
-                  <Skeleton className="h-3 w-12 bg-slate-100" />
-                  <Skeleton className="h-4 w-24 bg-slate-200" />
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Skeleton className="h-10 w-10 rounded-lg bg-slate-100" />
-                <Skeleton className="h-10 w-10 rounded-lg bg-slate-100" />
-                <Skeleton className="h-10 w-10 rounded-lg bg-slate-100" />
-              </div>
-            </div>
-          </div>
-          <div className="relative shrink-0">
-            <Skeleton className="h-56 w-56 rounded-full bg-slate-200 md:h-80 md:w-80" />
-          </div>
-        </div>
-      </TechCard>
-    );
-  }
-
-  const nameParts = profile.fullName.split(' ');
+  const nameParts = profile.name.split(' ');
   const firstName = nameParts[0];
   const lastName = nameParts.slice(1).join(' ');
+
+  // Perbaikan Social Links
+  const socialLinks = [
+    { id: 1, iconName: 'Linkedin', url: 'www.linkedin.com/in/yudriqul-aulia' },
+    { id: 2, iconName: 'Github', url: 'https://github.com/Hychtclyff' }, // Ganti dengan link github aslimu
+    { id: 2, iconName: 'Instagram', url: 'https://www.instagram.com/qulqull_/' }, // Ganti dengan link github aslimu
+  ];
 
   return (
     <TechCard
@@ -91,10 +40,9 @@ export const MainProfile = () => {
             <div className="inline-flex cursor-default items-center gap-2.5 rounded-full border border-emerald-100/50 bg-white/80 px-3 py-1.5 text-[10px] font-bold tracking-widest text-emerald-700 uppercase shadow-sm backdrop-blur-md transition-all hover:shadow-md">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-50 ring-2 ring-white"></span>
               </span>
-              {/* Static Text: Pakai t() */}
-              {t('hero.status')}
+              AVAILABLE FOR WORK
             </div>
 
             <div className="space-y-2">
@@ -106,10 +54,7 @@ export const MainProfile = () => {
               </h1>
 
               <p className="mx-auto max-w-xl text-sm leading-relaxed font-medium text-slate-500 md:mx-0 md:text-lg">
-                {/* Dynamic Data (Database): 
-                   Gunakan getContent(), JANGAN dibungkus t() 
-                */}
-                {getContent(profile.aboutId, profile.aboutEn)}
+                {profile.about}
               </p>
             </div>
           </div>
@@ -118,14 +63,23 @@ export const MainProfile = () => {
             <div className="flex flex-wrap justify-center gap-4 md:justify-start">
               <Button className="h-12 rounded-full border-0 bg-gradient-to-r from-blue-600 to-indigo-600 px-8 text-sm shadow-lg shadow-blue-200/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-blue-300/60">
                 <Briefcase size={18} className="mr-2.5 text-white/90" />
-                {t('hero.cta_primary')}
+                Lihat Portofolio
               </Button>
+
+              {/* PERBAIKAN: Tombol Download CV */}
               <Button
                 variant="outline"
+                asChild
                 className="h-12 rounded-full border-slate-200 px-8 text-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
               >
-                <Download size={18} className="mr-2.5 text-slate-600" />
-                {t('hero.cta_secondary')}
+                <a
+                  href="https://4hb5g34gc9.ufs.sh/f/CacFL4EqKm1SDNXF9mhdOGRyZBb7rPs43pm8V6L5hCMjEzxT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Download size={18} className="mr-2.5 text-slate-600" />
+                  Download CV
+                </a>
               </Button>
             </div>
 
@@ -140,10 +94,10 @@ export const MainProfile = () => {
                   </div>
                   <div className="text-left">
                     <p className="mb-0.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-                      {t('connect.email')}
+                      Email
                     </p>
                     <p className="text-sm font-bold text-slate-700 transition-colors group-hover:text-blue-600">
-                      {profile.email}
+                      {CONTACT_DATA.email}
                     </p>
                   </div>
                 </a>
@@ -156,23 +110,16 @@ export const MainProfile = () => {
                   </div>
                   <div className="text-left">
                     <p className="mb-0.5 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-                      {t('connect.location')}
+                      Location
                     </p>
-                    <p className="text-sm font-bold text-slate-700">
-                      {/* Dynamic Location */}
-                      {getContent(profile.locationId, profile.locationEn)}
-                    </p>
+                    <p className="text-sm font-bold text-slate-700">Jambi, Indonesia</p>
                   </div>
                 </div>
               </div>
 
               <div className="flex gap-2">
-                {profile?.socialLinks?.map((social: SocialLink) => {
-                  // 1. Ambil ikon berdasarkan nama string
+                {socialLinks.map((social) => {
                   const LucideIcon = Icons[social.iconName as keyof typeof Icons];
-
-                  // 2. Fallback ke Link jika ikon tidak ditemukan
-                  // 3. PENTING: Cast 'as React.ElementType' agar dianggap valid JSX
                   const IconComponent = (LucideIcon || Icons.Link) as React.ElementType;
 
                   return (
@@ -184,9 +131,7 @@ export const MainProfile = () => {
                       className="group relative rounded-xl border border-slate-200 bg-white p-2.5 text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:bg-blue-600 hover:text-white hover:shadow-lg hover:shadow-blue-500/30"
                       aria-label={social.iconName}
                     >
-                      {/* Sekarang aman digunakan sebagai JSX tag */}
                       <IconComponent size={18} />
-
                       <span className="absolute top-1 right-1 h-1.5 w-1.5 rounded-full bg-blue-400 opacity-0 transition-opacity group-hover:bg-white group-hover:opacity-100"></span>
                     </a>
                   );
@@ -197,7 +142,6 @@ export const MainProfile = () => {
         </div>
 
         <div className="group/image relative shrink-0 pt-8 md:pt-0">
-          {/* ... (Background Effects & Image - Tidak ada perubahan logika di sini) ... */}
           <div className="absolute top-1/2 left-1/2 -z-10 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100/50 blur-3xl"></div>
           <div className="animate-spin-slow pointer-events-none absolute inset-[-15px] rounded-full border border-dashed border-slate-300/60"></div>
           <div className="pointer-events-none absolute inset-[-8px] rounded-full border border-slate-100 bg-white/50 shadow-sm backdrop-blur-sm"></div>
@@ -205,11 +149,9 @@ export const MainProfile = () => {
           <div className="relative z-10 h-56 w-56 rounded-full bg-white p-2 shadow-2xl ring-1 shadow-blue-900/10 ring-slate-100 md:h-80 md:w-80">
             <div className="relative isolate aspect-square h-full w-full overflow-hidden rounded-full">
               <Image
-                src={profile.imageUrl}
-                alt={profile.fullName}
+                src="https://4hb5g34gc9.ufs.sh/f/CacFL4EqKm1SgEElhE40CSayzAVdviM96lQuLwqbI8fmkUPn"
+                alt={profile.name}
                 fill
-                // PERBAIKAN: Sesuaikan sizes dengan ukuran asli tampilannya
-                // Mobile (w-56 = ~224px), Desktop (w-80 = ~320px)
                 sizes="(max-width: 768px) 250px, 350px"
                 className="transform object-cover transition-transform duration-700 group-hover/image:scale-110"
                 priority
@@ -225,11 +167,10 @@ export const MainProfile = () => {
               </div>
               <div className="text-left leading-none">
                 <p className="mb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">
-                  Level
+                  Role
                 </p>
                 <p className="text-sm font-extrabold tracking-tight text-slate-800">
-                  {/* Dynamic Role / Level */}
-                  {getContent(profile.roleId, profile.roleEn)}
+                  Full Stack Developer
                 </p>
               </div>
             </div>
