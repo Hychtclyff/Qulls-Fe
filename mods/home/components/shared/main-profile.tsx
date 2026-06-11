@@ -19,7 +19,7 @@ export const MainProfile = () => {
 
   // Perbaikan Social Links
   const socialLinks = [
-    { id: 1, iconName: 'Linkedin', url: 'www.linkedin.com/in/yudriqul-aulia' },
+    { id: 1, iconName: 'Linkedin', url: 'https://www.linkedin.com/in/yudriqul-aulia' },
     { id: 2, iconName: 'Github', url: 'https://github.com/Hychtclyff' }, // Ganti dengan link github aslimu
     { id: 2, iconName: 'Instagram', url: 'https://www.instagram.com/qulqull_/' }, // Ganti dengan link github aslimu
   ];
